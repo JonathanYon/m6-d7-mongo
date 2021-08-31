@@ -1,5 +1,6 @@
 import express from "express";
 import blogModel from "./schema.js";
+import createHttpError from "http-errors";
 
 const blogsRouter = express.Router();
 
@@ -31,7 +32,7 @@ blogsRouter.get("/:Id", async (req, res, next) => {
       res.send(`blog ${req.params.Id} NOT found!!`);
     }
   } catch (error) {
-    next(error);
+    next(createHttpError(404, `post ${req.params.Id} NOT found!!`));
   }
 });
 blogsRouter.put("/:Id", async (req, res, next) => {
@@ -45,7 +46,7 @@ blogsRouter.put("/:Id", async (req, res, next) => {
       res.send(`blog ${req.params.Id} NOT found!!`);
     }
   } catch (error) {
-    next(error);
+    next(createHttpError(404, `post ${req.params.Id} NOT found!!`));
   }
 });
 blogsRouter.delete("/:Id", async (req, res, next) => {
