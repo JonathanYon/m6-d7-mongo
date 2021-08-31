@@ -1,14 +1,16 @@
-import { Router } from "express";
+import express from "express";
 import blogModel from "./schema.js";
 
-const blogsRouter = Router();
+const blogsRouter = express.Router();
 
 blogsRouter.post("/", async (req, res, next) => {
   try {
+    console.log(req.body);
     const post = await blogModel(req.body);
     const { _id } = await post.save();
     res.status(201).send({ _id });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 });

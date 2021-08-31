@@ -3,13 +3,13 @@ import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
 const readTimeSchema = new Schema({
-  value: Number,
-  unit: String,
+  value: { type: Number, required: true },
+  unit: { type: String, required: true },
 });
 
 const authorSchem = new Schema({
-  name: String,
-  avatar: String,
+  name: { type: String, required: true },
+  avatar: { type: String, required: true },
 });
 
 const blogSchema = new Schema(
@@ -30,4 +30,4 @@ const blogSchema = new Schema(
   { timestamps: true }
 );
 
-export default model(`blog`, blogSchema);
+export default model(`Blog`, blogSchema);
