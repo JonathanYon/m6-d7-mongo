@@ -10,7 +10,7 @@ const server = express();
 server.use(express.json());
 
 server.use("/blogs", blogsRouter);
-server.use("/comments", commentRouter);
+// server.use("/comments", commentRouter);
 
 mongoose.connect(process.env.MONGOS_CON_LOCAL);
 mongoose.connection.on(`connected`, () => {

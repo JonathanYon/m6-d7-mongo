@@ -131,7 +131,25 @@ blogsRouter.get("/post/:id/comments/:commentId", async (req, res, next) => {
 });
 blogsRouter.put("/post/:id/comments/:commentId", async (req, res, next) => {
   try {
+    const comment = await blogModel.findOneAndUpdate(
+      { _id: req.params.id, "comments._id": req.params.commentId },
+      {
+        $set: {
+          "comments.$": req.body,
+        },
+      },
+      { new: true }
+    );
+
+    // if (comment) {
+    res.send(comment);
+    // } else {
+    //   next(
+    //     createHttpError(404, `The Post you are looking for does NOT exist!`)
+    //   );
+    // }
   } catch (error) {
+    console.log(error);
     next(createHttpError(404));
   }
 });
