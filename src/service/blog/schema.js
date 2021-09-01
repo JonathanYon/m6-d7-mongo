@@ -2,15 +2,15 @@ import mongoose from "mongoose";
 
 const { Schema, model } = mongoose;
 
-const readTimeSchema = new Schema({
-  value: { type: Number, required: true },
-  unit: { type: String, required: true },
-});
+// const readTimeSchema = new Schema({
+//   value: { type: Number, required: true },
+//   unit: { type: String, required: true },
+// });
 
-const authorSchem = new Schema({
-  name: { type: String, required: true },
-  avatar: { type: String, required: true },
-});
+// const authorSchem = new Schema({
+//   name: { type: String, required: true },
+//   avatar: { type: String, required: true },
+// });
 
 const blogSchema = new Schema(
   {
@@ -18,14 +18,19 @@ const blogSchema = new Schema(
     title: { type: String, required: true },
     cover: { type: String, required: true },
     readTime: {
-      type: readTimeSchema,
-      required: true,
+      value: { type: Number, required: true },
+      unit: { type: String, required: true },
     },
     author: {
-      type: authorSchem,
-      required: true,
+      name: { type: String, required: true },
+      avatar: { type: String, required: true },
     },
     content: { type: String, required: true },
+    comments: [
+      {
+        comment: String,
+      },
+    ],
   },
   { timestamps: true }
 );

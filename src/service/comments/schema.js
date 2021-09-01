@@ -3,7 +3,6 @@ const { Schema, model } = mongoose;
 
 const commentSchema = new Schema({
   text: { type: String, required: true },
-  rate: { type: String, required: true },
 });
 
 export default model(`Comment`, commentSchema);

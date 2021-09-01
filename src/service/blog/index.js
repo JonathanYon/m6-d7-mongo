@@ -1,5 +1,6 @@
 import express from "express";
 import blogModel from "./schema.js";
+import commentModel from "../comments/schema.js";
 import createHttpError from "http-errors";
 
 const blogsRouter = express.Router();
@@ -59,6 +60,64 @@ blogsRouter.delete("/:Id", async (req, res, next) => {
     }
   } catch (error) {
     next(error);
+  }
+});
+
+//*********************************comment routes******************************** */
+
+//post comment
+
+blogsRouter.post("/post/:id", async (req, res, next) => {
+  try {
+    const post = await blogModel.findById(req.params.id);
+    if (post) {
+      const postComment = await blogModel.findByIdAndUpdate(
+        req.params.id,
+        { $push: { comments: req.body } },
+        { new: true }
+      );
+      res.send(postComment);
+    } else {
+      next(
+        createHttpError(404, `The Post you are looking for does NOT exist!`)
+      );
+    }
+  } catch (error) {
+    console.log(error);
+    next(createHttpError(404));
+  }
+});
+blogsRouter.get("/post/:id/comments", async (req, res, next) => {
+  try {
+    const post = await blogModel.findById(req.params.id);
+    if (post) {
+      const allComments = post.comments;
+      res.send(allComments);
+    } else {
+      next(
+        createHttpError(404, `The Post you are looking for does NOT exist!`)
+      );
+    }
+  } catch (error) {
+    next(createHttpError(404));
+  }
+});
+blogsRouter.get("/post/:id/comments/:commentId", async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(createHttpError(404));
+  }
+});
+blogsRouter.put("/post/:id/comments/:commentId", async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(createHttpError(404));
+  }
+});
+blogsRouter.delete("/post/:id/comments/:commentId", async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(createHttpError(404));
   }
 });
 
