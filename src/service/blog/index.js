@@ -1,6 +1,6 @@
 import express from "express";
 import blogModel from "./schema.js";
-import commentModel from "../comments/schema.js";
+import q2m from "query-to-mongo";
 import createHttpError from "http-errors";
 
 const blogsRouter = express.Router();
@@ -18,7 +18,10 @@ blogsRouter.post("/", async (req, res, next) => {
 });
 blogsRouter.get("/", async (req, res, next) => {
   try {
-    const posts = await blogModel.find({});
+    const query = q2m(req.query);
+
+    const total = await blogModel.countDocuments(query.criteria);
+    const posts = await blogModel.find({}).sort().skip().limit(3);
     res.send(posts);
   } catch (error) {
     next(error);
