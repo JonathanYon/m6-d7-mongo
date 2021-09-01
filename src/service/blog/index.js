@@ -104,7 +104,28 @@ blogsRouter.get("/post/:id/comments", async (req, res, next) => {
 });
 blogsRouter.get("/post/:id/comments/:commentId", async (req, res, next) => {
   try {
+    const post = await blogModel.findById(req.params.id);
+    if (post) {
+      const comment = post.comments.find(
+        (com) => com._id.toString() === req.params.commentId
+      );
+      if (comment) {
+        res.send(comment);
+      } else {
+        next(
+          createHttpError(
+            404,
+            `The comment you are looking for does NOT exist!`
+          )
+        );
+      }
+    } else {
+      next(
+        createHttpError(404, `The Post you are looking for does NOT exist!`)
+      );
+    }
   } catch (error) {
+    console.log(error);
     next(createHttpError(404));
   }
 });
