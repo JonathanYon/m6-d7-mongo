@@ -142,8 +142,9 @@ blogsRouter.put("/post/:id/comments/:commentId", async (req, res, next) => {
     );
 
     // if (comment) {
-    res.send(comment);
+    //   res.send(comment);
     // } else {
+
     //   next(
     //     createHttpError(404, `The Post you are looking for does NOT exist!`)
     //   );
@@ -155,6 +156,16 @@ blogsRouter.put("/post/:id/comments/:commentId", async (req, res, next) => {
 });
 blogsRouter.delete("/post/:id/comments/:commentId", async (req, res, next) => {
   try {
+    const comment = await blogModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: {
+          comments: { _id: req.params.commentId },
+        },
+      },
+      { new: true }
+    );
+    res.send(comment);
   } catch (error) {
     next(createHttpError(404));
   }
