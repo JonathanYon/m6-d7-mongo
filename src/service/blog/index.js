@@ -19,9 +19,14 @@ blogsRouter.post("/", async (req, res, next) => {
 blogsRouter.get("/", async (req, res, next) => {
   try {
     const query = q2m(req.query);
+    console.log(query);
 
-    const total = await blogModel.countDocuments(query.criteria);
-    const posts = await blogModel.find({}).sort().skip().limit(3);
+    const total = await blogModel.countDocuments(query.criteria); //will have to finsish the query when i get the posts
+    const posts = await blogModel
+      .find(query.criteria, query.options.fields)
+      .sort()
+      .skip()
+      .limit(3);
     res.send(posts);
   } catch (error) {
     next(error);
@@ -141,7 +146,7 @@ blogsRouter.put("/post/:id/comments/:commentId", async (req, res, next) => {
           "comments.$": req.body,
         },
       },
-      { new: true }
+      { new: true, runValidators: true }
     );
 
     // if (comment) {

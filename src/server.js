@@ -1,6 +1,13 @@
 import express from "express";
+import cors from "cors";
 import listEndpoints from "express-list-endpoints";
 import mongoose from "mongoose";
+import {
+  badRequestHandler,
+  genericErrorHandler,
+  forbidenHandler,
+  notFoundHandler,
+} from "./errorHandlers.js";
 import blogsRouter from "./service/blog/index.js";
 import commentRouter from "./service/comments/index.js";
 
@@ -8,9 +15,15 @@ const port = process.env.PORT || 5000;
 const server = express();
 
 server.use(express.json());
+server.use(cors());
 
 server.use("/blogs", blogsRouter);
 // server.use("/comments", commentRouter);
+
+server.use(notFoundHandler);
+server.use(badRequestHandler);
+server.use(forbidenHandler);
+server.use(genericErrorHandler);
 
 mongoose.connect(process.env.MONGOS_CON_LOCAL);
 mongoose.connection.on(`connected`, () => {
